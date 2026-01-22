@@ -39,7 +39,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    # ВСТАВЛЯЕМ ID ТВОЕЙ СУЩЕСТВУЮЩЕЙ ПОДСЕТИ (imuz-subnet)
+    # ВАЖНО: ID твоей существующей подсети (imuz-subnet)
     subnet_id = "e9b9uce0pt6elo5ksbrp"
     nat       = true
   }
