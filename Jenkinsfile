@@ -68,23 +68,24 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy App') {
             steps {
                 script {
                     echo '--- Deploying Bot ---'
                     def server_ip = readFile('server_ip.txt').trim()
                     
-                    // Копируем архив на новый сервер
+                    // Копируем архив
                     sh "scp -i /home/ubuntu/.ssh/id_rsa_deploy -o StrictHostKeyChecking=no music-bot.tar ubuntu@${server_ip}:/tmp/music-bot.tar"
                     
-                    // Заходим по SSH и запускаем
+                    // Запускаем (С ТОКЕНОМ!)
                     sh """
                         ssh -i /home/ubuntu/.ssh/id_rsa_deploy -o StrictHostKeyChecking=no ubuntu@${server_ip} '
                             sudo docker load -i /tmp/music-bot.tar
                             sudo docker stop music-bot || true
                             sudo docker rm music-bot || true
-                            sudo docker run -d --name music-bot --restart always 1vmc1/music-app:bot-v1
+                            
+                            # ЗАПУСК С ТОКЕНОМ:
+                            sudo docker run -d --name music-bot --restart always -e BOT_TOKEN='8570334492:AAG5baJCvzFUlPCvNP2ZQbDqls2UdAxDRB0' 1vmc1/music-app:bot-v1
                         '
                     """
                 }
