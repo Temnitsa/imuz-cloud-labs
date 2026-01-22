@@ -1,19 +1,14 @@
 pipeline {
     agent {
-        // Запускаем всё на твоем агенте
         label 'imuz-docker' 
     }
 
     environment {
-        // Токен для Яндекса. В идеале его хранить в Jenkins Credentials, 
-        // но пока для простоты просим при запуске или берем хардкодом (для теста).
-        // Лучше всего использовать "Build with Parameters".
         YC_TOKEN = "${params.YC_TOKEN}" 
         ANSIBLE_HOST_KEY_CHECKING = 'False'
     }
 
     parameters {
-        // При запуске Jenkins спросит токен
         string(name: 'YC_TOKEN', defaultValue: '', description: 'Введите OAuth токен Yandex Cloud')
     }
 
@@ -22,7 +17,6 @@ pipeline {
             steps {
                 script {
                     echo '--- Building Artifact (Docker Save) ---'
-                    // Скачиваем и сохраняем образ
                     sh 'docker pull 1vmc1/music-app:bot-v1'
                     sh 'docker save 1vmc1/music-app:bot-v1 -o music-bot.tar'
                 }
