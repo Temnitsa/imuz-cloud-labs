@@ -1,0 +1,13 @@
+heat_template_version: 2015-10-15
+description: Music Bot Infrastructure
+
+resources:
+  my_server:
+    type: OS::Nova::Server
+    properties:
+      name: IMuz-Automated-Server
+      image: ubuntu-20.04
+      flavor: m1.small
+      key_name: ilia1
+      networks:
+        - network: public
