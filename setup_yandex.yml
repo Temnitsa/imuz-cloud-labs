@@ -1,0 +1,25 @@
+---
+- name: Setup Yandex Server
+  hosts: yandex_servers
+  become: yes
+  tasks:
+    - name: Wait for SSH
+      wait_for_connection:
+        timeout: 300
+    - name: Update apt
+      apt:
+        update_cache: yes
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
